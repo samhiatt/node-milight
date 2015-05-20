@@ -8,14 +8,24 @@ class Controller {
 	host: string = '10.10.10.100';
 	port: number = 8899;
 	socket = dgram.createSocket('udp4');
-	_send = function(group, hex, cb){
+	_send = function(group, command, cb){
+		// command can be either a command name string, or an array of numbers  
 		if (!group) group = 0;
-		if (typeof hex == 'string') hex = this.commands[hex];
-		if (hex instanceof Array) hex = hex[group];
+		var hex, buffer;
+		if(typeof command == 'string'){
+			hex = this.commands[command];
+			if (hex && hex.length && hex.length==5) hex = hex[group];
+			//if (hex instanceof Array) hex = [hex[group]];
+			buffer = new Buffer(hex, 'hex');
+		} else if (command instanceof Array && typeof command[0]=='number'){
+			//hex = command;
+			//var commandArray = [];
+			//command.forEach(function(c){commandArray.concat(c,0x00,0x55);});
+			buffer = new Buffer(command, 'hex');
+		}
 		if (!cb) cb = function(err,res){
 			if (err) throw err;
 		};
-		var buffer = new Buffer([hex].concat([0x00,0x55]), 'hex');
 		this.socket.send(
 			buffer,
 			0,
@@ -45,17 +55,11 @@ class Controller {
 	};
 	darkest = function(group,cb){
 		if (!group) group = 0;
-		async.mapSeries([0,1,2,3,4,5,6,7,8,9],
-			function(i,next){
-				setTimeout(function(){
-					this.brightnessDown(group,function(err,res){
-						if (err) throw err;
-						next(null,res);
-					});
-				}.bind(this),10);
-			}.bind(this),
-			cb
-		);
+		var commands = this.commands.on[group];
+		for (var i = 0; i<10; i++){
+			commands = commands.concat(this.commands.brightnessDown);
+		}
+		this._send(group,commands,cb);
 	};
 	brightness = function(level,group,cb){
 		if (!group) group = 0;
@@ -71,7 +75,7 @@ class Controller {
 							if (err) throw err;
 							next(null,res);
 						});
-					}.bind(this),10);
+					}.bind(this),20);
 				}.bind(this),
 				cb
 			);
@@ -93,14 +97,38 @@ class Controller {
 
 class WhiteController extends Controller {
 	commands = {
-		on: [0x35,0x38,0x3d,0x37,0x32],
-		off: [0x39,0x3b,0x33,0x3a,0x36],
-		brightnessUp: 0x3c,
-		brightnessDown: 0x34,
-		warmer: 0x3e,
-		cooler: 0x3f,
-		onFull: [0xb5,0xb8,0xbd,0xb7,0xb2],
-		nightlight: [0xb9,0xbb,0xb3,0xba,0xb6]
+		on: [
+			[0x35,0x00,0x55],
+			[0x38,0x00,0x55],
+			[0x3d,0x00,0x55],
+			[0x37,0x00,0x55],
+			[0x32,0x00,0x55]
+		],
+		off: [
+			[0x39,0x00,0x55],
+			[0x3b,0x00,0x55],
+			[0x33,0x00,0x55],
+			[0x3a,0x00,0x55],
+			[0x36,0x00,0x55]
+		],
+		brightnessUp: [0x3c,0x00,0x55],
+		brightnessDown: [0x34,0x00,0x55],
+		warmer: [0x3e,0x00,0x55],
+		cooler: [0x3f,0x00,0x55],
+		onFull: [
+			[0xb5,0x00,0x55],
+			[0xb8,0x00,0x55],
+			[0xbd,0x00,0x55],
+			[0xb7,0x00,0x55],
+			[0xb2,0x00,0x55]
+		],
+		nightlight: [
+			[0xb9,0x00,0x55],
+			[0xbb,0x00,0x55],
+			[0xb3,0x00,0x55],
+			[0xba,0x00,0x55],
+			[0xb6,0x00,0x55]
+		]
 	};
 	warmer = function(group,cb){
 		if (typeof group == 'undefined') this._send(null,'warmer',cb);
