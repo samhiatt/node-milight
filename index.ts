@@ -1,6 +1,8 @@
 /// <reference path="types/node-0.10.d.ts" />
+/// <reference path="types/async.d.ts" />
 
 import dgram = require('dgram');
+import async = require('async');
 
 class Controller {
 	host: string = '10.10.10.100';
@@ -41,6 +43,20 @@ class Controller {
 			this._send(null,'brightnessDown',cb);
 		}.bind(this));
 	};
+	darkest = function(group,cb){
+		if (!group) group = 0;
+		async.mapSeries([0,1,2,3,4,5,6,7,8,9],
+			function(i,next){
+				setTimeout(function(){
+					this.brightnessDown(group,function(err,res){
+						if (err) throw err;
+						next(null,res);
+					});
+				}.bind(this),10);
+			}.bind(this),
+			cb
+		);
+	};
 	nightlight = function(group,cb){
 		this.off(group,function(err,resp){
 			if (err) throw err;
@@ -79,6 +95,20 @@ class WhiteController extends Controller {
 			if (err) throw err;
 			this._send(null,'cooler',cb);
 		}.bind(this));
+	};
+	brightness = function(level,group,cb){
+		/*
+		 def brightness(level=100, group=0):
+		 """ Assumes level is out of 100 """
+		 if level not in range(0,101):
+		 raise Exception("Brightness must be value between 0 and 100")
+		 b = int(floor(level / 10.0)) #lights have 10 levels of brightness
+		 commands = list(darkest(group))
+		 for i in range(0, b):
+		 commands.append(COMMANDS['BRIGHTER'])
+		 return tuple(commands)
+	  */
+		
 	};
 }
 
