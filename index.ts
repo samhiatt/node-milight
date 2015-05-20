@@ -57,6 +57,26 @@ class Controller {
 			cb
 		);
 	};
+	brightness = function(level,group,cb){
+		if (!group) group = 0;
+		level = Math.floor(level/10);
+		this.darkest(group,function(err,res){
+			if (err) throw err;
+			var range = [];
+			for (var i=0; i<level; i++) {range.push(i);}
+			async.mapSeries(range,
+				function(i,next){
+					setTimeout(function(){
+						this.brightnessUp(group,function(err,res){
+							if (err) throw err;
+							next(null,res);
+						});
+					}.bind(this),10);
+				}.bind(this),
+				cb
+			);
+		}.bind(this));
+	};
 	nightlight = function(group,cb){
 		this.off(group,function(err,resp){
 			if (err) throw err;
@@ -95,20 +115,6 @@ class WhiteController extends Controller {
 			if (err) throw err;
 			this._send(null,'cooler',cb);
 		}.bind(this));
-	};
-	brightness = function(level,group,cb){
-		/*
-		 def brightness(level=100, group=0):
-		 """ Assumes level is out of 100 """
-		 if level not in range(0,101):
-		 raise Exception("Brightness must be value between 0 and 100")
-		 b = int(floor(level / 10.0)) #lights have 10 levels of brightness
-		 commands = list(darkest(group))
-		 for i in range(0, b):
-		 commands.append(COMMANDS['BRIGHTER'])
-		 return tuple(commands)
-	  */
-		
 	};
 }
 

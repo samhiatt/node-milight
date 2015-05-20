@@ -18,4 +18,4 @@ var controller = require('./')({host:'192.168.42.100'}).WhiteController;
 //	//process.exit();
 //});
 
-controller.off(1)
+controller.brightness(10,4)
