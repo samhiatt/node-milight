@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node_modules/typescript/bin/tsc --module commonjs index.ts"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/samhiatt/node-milight/issues"
   },
-  "homepage": "https://github.com/samhiatt/node-milight"
+  "homepage": "https://github.com/samhiatt/node-milight",
+  "dependencies": {
+    "typescript": "^1.5.0-beta"
+  }
 }
