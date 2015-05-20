@@ -426,7 +426,7 @@ declare module "http" {
 		 * - Agent object: explicitly use the passed in Agent.
 		 * - false: opts out of connection pooling with an Agent, defaults request to Connection: close.
 		 */
-		agent?: Agent|boolean;
+		agent?: Agent;
 	}
 
     export var STATUS_CODES: {
