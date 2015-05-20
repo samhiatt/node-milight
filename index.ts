@@ -83,7 +83,7 @@ class Controller {
 			setTimeout(function(){
 				this._send(group,'nightlight',cb);
 			}.bind(this),100);
-		});
+		}.bind(this));
 	};
 	constructor(opts) {
 		if(opts.host) this.host = opts.host;
