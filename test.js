@@ -167,5 +167,30 @@ exports.testWhite = {
 			// hack to exit tests
 			setTimeout(function(){process.exit(0)},1000);
 		});
+	},
+	testOnFull: function(test){
+		var server = this.server;
+		async.series([
+			function(cb){
+				testCommand('onFull',null,[0x35,0xb5],server,test,cb);
+			},
+			function(cb){
+				testCommand('onFull',1,[0x38,0xb8],server,test,cb);
+			},
+			function(cb){
+				testCommand('onFull',2,[0x3d,0xbd],server,test,cb);
+			},
+			function(cb){
+				testCommand('onFull',3,[0x37,0xb7],server,test,cb);
+			},
+			function(cb){
+				testCommand('onFull',4,[0x32,0xb2],server,test,cb);
+			}
+		],function(err,res){
+			if (err) throw err;
+			test.done();
+			// hack to exit tests
+			setTimeout(function(){process.exit(0)},1000);
+		});
 	}
 };
