@@ -67,7 +67,7 @@ class Controller {
 			async.series(funcs,cb);
 		});
 	};
-	brightness = function(level,group,cb){
+	setBrightness = function(level,group,cb){
 		if (!group) group = 0;
 		level = Math.floor(level/10);
 		this.darkest(group,function(err,res){
@@ -146,13 +146,13 @@ class WhiteController extends Controller {
 	warmest = function(group,cb){
 		if (!group) group = 0;
 		var self = this;
-		this._send(group,'on',function(err,res){
+		this.on(group,function(err,res){
 			if (err) throw err;
 			var funcs = [];
 			for (var i = 0; i<10; i++){
 				funcs.push(function(next){
 					setTimeout(function(){
-						self._send(group,'warmer',next);
+						self.warmer(null,next);
 					},100);
 				});
 			}
@@ -169,13 +169,45 @@ class WhiteController extends Controller {
 	coolest = function(group,cb){
 		if (!group) group = 0;
 		var self = this;
-		this._send(group,'on',function(err,res){
+		this.on(group,function(err,res){
 			if (err) throw err;
 			var funcs = [];
 			for (var i = 0; i<10; i++){
 				funcs.push(function(next){
 					setTimeout(function(){
-						self._send(group,'cooler',next);
+						self.cooler(group,next);
+					},100);
+				});
+			}
+			async.series(funcs,cb);
+		});
+	};
+	setCoolness = function(level,group,cb){
+		if (!group) group = 0;
+		var self = this;
+		this.coolest(group, function(err,res){
+			if (err) throw err;
+			var funcs = [];
+			for (var i = 100; i>level; i-=10){
+				funcs.push(function(next){
+					setTimeout(function(){
+						self.warmer(group,next);
+					},100);
+				});
+			}
+			async.series(funcs,cb);
+		});
+	};
+	setWarmness = function(level,group,cb){
+		if (!group) group = 0;
+		var self = this;
+		this.warmest(group, function(err,res){
+			if (err) throw err;
+			var funcs = [];
+			for (var i = 100; i>level; i-=10){
+				funcs.push(function(next){
+					setTimeout(function(){
+						self.cooler(group,next);
 					},100);
 				});
 			}
