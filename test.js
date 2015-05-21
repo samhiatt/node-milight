@@ -82,34 +82,34 @@ exports.testWhite = {
 		var server = this.server;
 		async.series([
 			function(cb){
-				testCommand('brightnessUp',null,0x3c,server,test,cb);
+				testCommand('brighter',null,0x3c,server,test,cb);
 			},
 			function(cb){
-				testCommand('brightnessDown',null,0x34,server,test,cb);
+				testCommand('dimmer',null,0x34,server,test,cb);
 			},
 			function(cb){
-				testCommand('brightnessUp',1,[0x38,0x3c],server,test,cb);
+				testCommand('brighter',1,[0x38,0x3c],server,test,cb);
 			},
 			function(cb){
-				testCommand('brightnessDown',1,[0x38,0x34],server,test,cb);
+				testCommand('dimmer',1,[0x38,0x34],server,test,cb);
 			},
 			function(cb){
-				testCommand('brightnessUp',2,[0x3d,0x3c],server,test,cb);
+				testCommand('brighter',2,[0x3d,0x3c],server,test,cb);
 			},
 			function(cb){
-				testCommand('brightnessDown',2,[0x3d,0x34],server,test,cb);
+				testCommand('dimmer',2,[0x3d,0x34],server,test,cb);
 			},
 			function(cb){
-				testCommand('brightnessUp',3,[0x37,0x3c],server,test,cb);
+				testCommand('brighter',3,[0x37,0x3c],server,test,cb);
 			},
 			function(cb){
-				testCommand('brightnessDown',3,[0x37,0x34],server,test,cb);
+				testCommand('dimmer',3,[0x37,0x34],server,test,cb);
 			},
 			function(cb){
-				testCommand('brightnessUp',4,[0x32,0x3c],server,test,cb);
+				testCommand('brighter',4,[0x32,0x3c],server,test,cb);
 			},
 			function(cb){
-				testCommand('brightnessDown',4,[0x32,0x34],server,test,cb);
+				testCommand('dimmer',4,[0x32,0x34],server,test,cb);
 			}
 		],function(err,res){
 			if (err) throw err;

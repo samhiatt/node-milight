@@ -37,18 +37,18 @@ class Controller {
 		}.bind(this));
 	};
 	allOnFull = function(cb){this.onFull(0,cb);};
-	brightnessUp = function(group,cb){
-		if (group == null) this._send(null,'brightnessUp',cb);
+	brighter = function(group,cb){
+		if (group == null) this._send(null,'brighter',cb);
 		else this.on(group,function(err,resp){
 			if (err) throw err;
-			this._send(null,'brightnessUp',cb);
+			this._send(null,'brighter',cb);
 		}.bind(this));
 	};
-	brightnessDown = function(group,cb){
-		if (group == null) this._send(null,'brightnessDown',cb);
+	dimmer = function(group,cb){
+		if (group == null) this._send(null,'dimmer',cb);
 		else this.on(group,function(err,resp){
 			if (err) throw err;
-			this._send(null,'brightnessDown',cb);
+			this._send(null,'dimmer',cb);
 		}.bind(this));
 	};
 	darkest = function(group,cb){
@@ -60,7 +60,7 @@ class Controller {
 			for (var i = 0; i<9; i++){
 				funcs.push(function(next){
 					setTimeout(function(){
-						self._send(null,'brightnessDown',next);
+						self._send(null,'dimmer',next);
 					},10);
 				});
 			}
@@ -77,7 +77,7 @@ class Controller {
 			async.mapSeries(range,
 				function(i,next){
 					setTimeout(function(){
-						this.brightnessUp(group,function(err,res){
+						this.brighter(group,function(err,res){
 							if (err) throw err;
 							next(null,res);
 						});
@@ -117,8 +117,8 @@ class WhiteController extends Controller {
 			[0x3a,0x00,0x55],
 			[0x36,0x00,0x55]
 		],
-		brightnessUp: [0x3c,0x00,0x55],
-		brightnessDown: [0x34,0x00,0x55],
+		brighter: [0x3c,0x00,0x55],
+		dimmer: [0x34,0x00,0x55],
 		warmer: [0x3e,0x00,0x55],
 		cooler: [0x3f,0x00,0x55],
 		onFull: [
