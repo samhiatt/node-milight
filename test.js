@@ -127,5 +127,45 @@ exports.testWhite = {
 			// hack to exit tests
 			setTimeout(function(){process.exit(0)},1000);
 		});
+	},
+	testWarmnessCoolness: function(test){
+		var server = this.server;
+		async.series([
+			function(cb){
+				testCommand('warmer',null,0x3e,server,test,cb);
+			},
+			function(cb){
+				testCommand('cooler',null,0x3f,server,test,cb);
+			},
+			function(cb){
+				testCommand('warmer',1,[0x38,0x3e],server,test,cb);
+			},
+			function(cb){
+				testCommand('cooler',1,[0x38,0x3f],server,test,cb);
+			},
+			function(cb){
+				testCommand('warmer',2,[0x3d,0x3e],server,test,cb);
+			},
+			function(cb){
+				testCommand('cooler',2,[0x3d,0x3f],server,test,cb);
+			},
+			function(cb){
+				testCommand('warmer',3,[0x37,0x3e],server,test,cb);
+			},
+			function(cb){
+				testCommand('cooler',3,[0x37,0x3f],server,test,cb);
+			},
+			function(cb){
+				testCommand('warmer',4,[0x32,0x3e],server,test,cb);
+			},
+			function(cb){
+				testCommand('cooler',4,[0x32,0x3f],server,test,cb);
+			}
+		],function(err,res){
+			if (err) throw err;
+			test.done();
+			// hack to exit tests
+			setTimeout(function(){process.exit(0)},1000);
+		});
 	}
 };
