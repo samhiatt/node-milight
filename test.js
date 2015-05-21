@@ -29,7 +29,7 @@ var testCommand = function(command,group,expected,server,test,callback){
 		funcs.push(function(next){
 			server.once("message", function (msg, rinfo) {
 				var msgArr = getMsgArray(msg);
-				//console.log("UDP server received:",JSON.stringify(msgArr));
+				console.log("UDP server received:",JSON.stringify(msgArr));
 				test.equal(msgArr[0], expectedVal, "Expected response for '"+command+"' group "+group+" command: msgArr[0]=="+expectedVal);
 				next();
 			});
@@ -217,6 +217,52 @@ exports.testWhite = {
 			},
 			function(cb){
 				testCommand('darkest',4,[0x32,0x34,0x34,0x34,0x34,0x34,0x34,0x34,0x34,0x34],server,test,cb);
+			}
+		],function(err,res){
+			if (err) throw err;
+			test.done();
+		});
+	},
+	testWarmest: function(test){
+		var server = this.server;
+		async.series([
+			function(cb){
+				testCommand('warmest',0,[0x35,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e],server,test,cb);
+			},
+			function(cb){
+				testCommand('warmest',1,[0x38,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e],server,test,cb);
+			},
+			function(cb){
+				testCommand('warmest',2,[0x3d,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e],server,test,cb);
+			},
+			function(cb){
+				testCommand('warmest',3,[0x37,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e],server,test,cb);
+			},
+			function(cb){
+				testCommand('warmest',4,[0x32,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e,0x3e],server,test,cb);
+			}
+		],function(err,res){
+			if (err) throw err;
+			test.done();
+		});
+	},
+	testCoolest: function(test){
+		var server = this.server;
+		async.series([
+			function(cb){
+				testCommand('coolest',0,[0x35,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f],server,test,cb);
+			},
+			function(cb){
+				testCommand('coolest',1,[0x38,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f],server,test,cb);
+			},
+			function(cb){
+				testCommand('coolest',2,[0x3d,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f],server,test,cb);
+			},
+			function(cb){
+				testCommand('coolest',3,[0x37,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f],server,test,cb);
+			},
+			function(cb){
+				testCommand('coolest',4,[0x32,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f,0x3f],server,test,cb);
 			}
 		],function(err,res){
 			if (err) throw err;
