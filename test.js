@@ -117,6 +117,8 @@ exports.testWhite = {
 		],function(err,res){
 			if (err) throw err;
 			test.done();
+			// hack to exit tests
+			setTimeout(function(){process.exit(0)},1000);
 		});
 	}
 };
