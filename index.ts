@@ -131,14 +131,14 @@ class WhiteController extends Controller {
 		]
 	};
 	warmer = function(group,cb){
-		if (typeof group == 'undefined') this._send(null,'warmer',cb);
+		if (group == null) this._send(null,'warmer',cb);
 		else this.on(group,function(err,resp){
 			if (err) throw err;
 			this._send(null,'warmer',cb);
 		}.bind(this));
 	};
 	cooler = function(group,cb){
-		if (typeof group == 'undefined') this._send(null,'cooler',cb);
+		if (group == null) this._send(null,'cooler',cb);
 		else this.on(group,function(err,resp){
 			if (err) throw err;
 			this._send(null,'cooler',cb);
