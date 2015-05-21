@@ -8,10 +8,8 @@ class Controller {
 	host: string = '10.10.10.100';
 	port: number = 8899;
 	socket = dgram.createSocket('udp4');
-	_send = function(group, command, cb){
-		// command can be either a command name string, or an array of numbers  
+	_send = function(group, command, cb){ 
 		if (!group && group != null) group = 0;
-		var hex, buffer;
 		var hex = this.commands[command];
 		if (hex instanceof Array && hex.length == 5) hex = hex[group];
 		var buffer: any = new Buffer(hex, 'hex');
@@ -145,12 +143,44 @@ class WhiteController extends Controller {
 			this._send(null,'warmer',cb);
 		}.bind(this));
 	};
+	warmest = function(group,cb){
+		if (!group) group = 0;
+		var self = this;
+		this._send(group,'on',function(err,res){
+			if (err) throw err;
+			var funcs = [];
+			for (var i = 0; i<10; i++){
+				funcs.push(function(next){
+					setTimeout(function(){
+						self._send(group,'warmer',next);
+					},100);
+				});
+			}
+			async.series(funcs,cb);
+		});
+	};
 	cooler = function(group,cb){
 		if (group == null) this._send(null,'cooler',cb);
 		else this.on(group,function(err,resp){
 			if (err) throw err;
 			this._send(null,'cooler',cb);
 		}.bind(this));
+	};
+	coolest = function(group,cb){
+		if (!group) group = 0;
+		var self = this;
+		this._send(group,'on',function(err,res){
+			if (err) throw err;
+			var funcs = [];
+			for (var i = 0; i<10; i++){
+				funcs.push(function(next){
+					setTimeout(function(){
+						self._send(group,'cooler',next);
+					},100);
+				});
+			}
+			async.series(funcs,cb);
+		});
 	};
 }
 
