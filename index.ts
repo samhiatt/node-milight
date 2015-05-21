@@ -153,7 +153,7 @@ class WhiteController extends Controller {
 				funcs.push(function(next){
 					setTimeout(function(){
 						self.warmer(null,next);
-					},100);
+					},10);
 				});
 			}
 			async.series(funcs,cb);
@@ -176,7 +176,7 @@ class WhiteController extends Controller {
 				funcs.push(function(next){
 					setTimeout(function(){
 						self.cooler(null,next);
-					},100);
+					},10);
 				});
 			}
 			async.series(funcs,cb);
@@ -192,7 +192,7 @@ class WhiteController extends Controller {
 				funcs.push(function(next){
 					setTimeout(function(){
 						self.warmer(null,next);
-					},100);
+					},10);
 				});
 			}
 			async.series(funcs,cb);
@@ -208,7 +208,7 @@ class WhiteController extends Controller {
 				funcs.push(function(next){
 					setTimeout(function(){
 						self.cooler(null,next);
-					},100);
+					},10);
 				});
 			}
 			async.series(funcs,cb);
