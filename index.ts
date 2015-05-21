@@ -39,6 +39,8 @@ class Controller {
 	off = function(group,cb){this._send(group,'off',cb)};
 	allOn = function(cb){this.on(0,cb);};
 	allOff = function(cb){this.off(0,cb);};
+	onFull = function(group,cb){this._send(group,'onFull',cb)};
+	allOnFull = function(cb){this.onFull(0,cb);};
 	brightnessUp = function(group,cb){
 		if (group == null) this._send(null,'brightnessUp',cb);
 		else this.on(group,function(err,resp){
