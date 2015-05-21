@@ -61,7 +61,9 @@ class Controller {
 			var funcs = [];
 			for (var i = 0; i<10; i++){
 				funcs.push(function(next){
-					self._send(group,'brightnessDown',next);
+					setTimeout(function(){
+						self._send(null,'brightnessDown',next);
+					},10);
 				});
 			}
 			async.series(funcs,cb);
