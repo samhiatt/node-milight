@@ -182,5 +182,30 @@ exports.testWhite = {
 			// hack to exit tests
 			setTimeout(function(){process.exit(0)},10000);
 		});
+	},
+	testNightlight: function(test){
+		var server = this.server;
+		async.series([
+			function(cb){
+				testCommand('nightlight',0,[0x39,0xb9],server,test,cb);
+			},
+			function(cb){
+				testCommand('nightlight',1,[0x3b,0xbb],server,test,cb);
+			},
+			function(cb){
+				testCommand('nightlight',2,[0x33,0xb3],server,test,cb);
+			},
+			function(cb){
+				testCommand('nightlight',3,[0x3a,0xba],server,test,cb);
+			},
+			function(cb){
+				testCommand('nightlight',4,[0x36,0xb6],server,test,cb);
+			}
+		],function(err,res){
+			if (err) throw err;
+			test.done();
+			// hack to exit tests
+			setTimeout(function(){process.exit(0)},10000);
+		});
 	}
 };
