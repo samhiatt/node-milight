@@ -26,28 +26,17 @@ var testCommand = function(command,group,expected,server,test,callback){
 	if (!(expected instanceof Array)) expected = [expected];
 	var funcs = [];
 	expected.forEach(function(expectedVal){
-		funcs.concat(function(cb) {
-			async.parallel([
-				function(next){
-					server.once("message", function (msg, rinfo) {
-						var msgArr = getMsgArray(msg);
-						test.equal(msgArr[0], expectedVal, "Expected response for '"+command+"' group "+group+" command: msgArr[0]=="+expectedVal);
-						next();
-					});
-				},
-				function(next){
-					var udpCb = function(err,res){
-						if (err) throw err;
-						test.equal(res,3,"Expected UDP response: 3");
-						next();
-					};
-					if (group != null) milight.WhiteController[command](group,udpCb);
-					else milight.WhiteController[command](null,udpCb);
-				}
-			],cb);
+		funcs.push(function(next){
+			server.once("message", function (msg, rinfo) {
+				var msgArr = getMsgArray(msg);
+				//console.log("UDP server received:",JSON.stringify(msgArr));
+				test.equal(msgArr[0], expectedVal, "Expected response for '"+command+"' group "+group+" command: msgArr[0]=="+expectedVal);
+				next();
+			});
 		});
 	});
 	async.series(funcs, callback);
+	milight.WhiteController[command](group);
 };
 
 exports.testWhite = {
@@ -173,7 +162,7 @@ exports.testWhite = {
 		var server = this.server;
 		async.series([
 			function(cb){
-				testCommand('onFull',null,[0x35,0xb5],server,test,cb);
+				testCommand('onFull',0,[0x35,0xb5],server,test,cb);
 			},
 			function(cb){
 				testCommand('onFull',1,[0x38,0xb8],server,test,cb);
@@ -191,7 +180,7 @@ exports.testWhite = {
 			if (err) throw err;
 			test.done();
 			// hack to exit tests
-			setTimeout(function(){process.exit(0)},1000);
+			setTimeout(function(){process.exit(0)},10000);
 		});
 	}
 };
