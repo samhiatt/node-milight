@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/nodeunit test.js",
-    "build": "node_modules/typescript/bin/tsc --module commonjs index.ts"
+    "build": "node_modules/typescript/bin/tsc --module commonjs index.ts",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
