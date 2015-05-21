@@ -55,11 +55,17 @@ class Controller {
 	};
 	darkest = function(group,cb){
 		if (!group) group = 0;
-		var commands = this.commands.on[group];
-		for (var i = 0; i<10; i++){
-			commands = commands.concat(this.commands.brightnessDown);
-		}
-		this._send(group,commands,cb);
+		var self = this;
+		this._send(group,'on',function(err,res){
+			if (err) throw err;
+			var funcs = [];
+			for (var i = 0; i<9; i++){
+				funcs.push(function(next){
+					self._send(group,'brightnessDown',next);
+				});
+			}
+			async.series(funcs,cb);
+		});
 	};
 	brightness = function(level,group,cb){
 		if (!group) group = 0;
