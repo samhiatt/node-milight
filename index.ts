@@ -12,17 +12,9 @@ class Controller {
 		// command can be either a command name string, or an array of numbers  
 		if (!group && group != null) group = 0;
 		var hex, buffer;
-		if(typeof command == 'string'){
-			hex = this.commands[command];
-			if (hex && hex.length && hex.length==5) hex = hex[group];
-			//if (hex instanceof Array) hex = [hex[group]];
-			buffer = new Buffer(hex, 'hex');
-		} else if (command instanceof Array && typeof command[0]=='number'){
-			//hex = command;
-			//var commandArray = [];
-			//command.forEach(function(c){commandArray.concat(c,0x00,0x55);});
-			buffer = new Buffer(command, 'hex');
-		}
+		var hex = this.commands[command];
+		if (hex instanceof Array && hex.length == 5) hex = hex[group];
+		var buffer: any = new Buffer(hex, 'hex');
 		if (!cb) cb = function(err,res){
 			if (err) throw err;
 		};
@@ -39,7 +31,13 @@ class Controller {
 	off = function(group,cb){this._send(group,'off',cb)};
 	allOn = function(cb){this.on(0,cb);};
 	allOff = function(cb){this.off(0,cb);};
-	onFull = function(group,cb){this._send(group,'onFull',cb)};
+	onFull = function(group,cb){
+		if (!group) group = 0;
+		this._send(group,'on',function(err,res){
+			if (err) throw err;
+			this._send(group,'onFull',cb)
+		}.bind(this));
+	};
 	allOnFull = function(cb){this.onFull(0,cb);};
 	brightnessUp = function(group,cb){
 		if (group == null) this._send(null,'brightnessUp',cb);
