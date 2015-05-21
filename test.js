@@ -114,8 +114,6 @@ exports.testWhite = {
 		],function(err,res){
 			if (err) throw err;
 			test.done();
-			// hack to exit tests
-			setTimeout(function(){process.exit(0)},1000);
 		});
 	},
 	testWarmnessCoolness: function(test){
@@ -154,8 +152,6 @@ exports.testWhite = {
 		],function(err,res){
 			if (err) throw err;
 			test.done();
-			// hack to exit tests
-			setTimeout(function(){process.exit(0)},1000);
 		});
 	},
 	testOnFull: function(test){
@@ -179,8 +175,6 @@ exports.testWhite = {
 		],function(err,res){
 			if (err) throw err;
 			test.done();
-			// hack to exit tests
-			setTimeout(function(){process.exit(0)},10000);
 		});
 	},
 	testNightlight: function(test){
@@ -204,8 +198,6 @@ exports.testWhite = {
 		],function(err,res){
 			if (err) throw err;
 			test.done();
-			// hack to exit tests
-			setTimeout(function(){process.exit(0)},10000);
 		});
 	},
 	testDarkest: function(test){
@@ -230,7 +222,7 @@ exports.testWhite = {
 			if (err) throw err;
 			test.done();
 			// hack to exit tests
-			setTimeout(function(){process.exit(0)},10000);
+			setTimeout(function(){process.exit(0)},1000);
 		});
 	}
 };
