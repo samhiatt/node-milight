@@ -57,7 +57,7 @@ class Controller {
 		this._send(group,'on',function(err,res){
 			if (err) throw err;
 			var funcs = [];
-			for (var i = 0; i<10; i++){
+			for (var i = 0; i<9; i++){
 				funcs.push(function(next){
 					setTimeout(function(){
 						self._send(null,'brightnessDown',next);
@@ -149,7 +149,7 @@ class WhiteController extends Controller {
 		this.on(group,function(err,res){
 			if (err) throw err;
 			var funcs = [];
-			for (var i = 0; i<10; i++){
+			for (var i = 0; i<9; i++){
 				funcs.push(function(next){
 					setTimeout(function(){
 						self.warmer(null,next);
@@ -172,10 +172,10 @@ class WhiteController extends Controller {
 		this.on(group,function(err,res){
 			if (err) throw err;
 			var funcs = [];
-			for (var i = 0; i<10; i++){
+			for (var i = 0; i<9; i++){
 				funcs.push(function(next){
 					setTimeout(function(){
-						self.cooler(group,next);
+						self.cooler(null,next);
 					},100);
 				});
 			}
@@ -191,7 +191,7 @@ class WhiteController extends Controller {
 			for (var i = 100; i>level; i-=10){
 				funcs.push(function(next){
 					setTimeout(function(){
-						self.warmer(group,next);
+						self.warmer(null,next);
 					},100);
 				});
 			}
@@ -207,7 +207,7 @@ class WhiteController extends Controller {
 			for (var i = 100; i>level; i-=10){
 				funcs.push(function(next){
 					setTimeout(function(){
-						self.cooler(group,next);
+						self.cooler(null,next);
 					},100);
 				});
 			}
