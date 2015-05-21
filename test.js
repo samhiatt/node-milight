@@ -28,21 +28,22 @@ var testCommand = function(command,group,expected,server,test,callback){
 	expected.forEach(function(expectedVal){
 		funcs.concat(function(cb) {
 			async.parallel([
-				function(cb1){
+				function(next){
 					server.once("message", function (msg, rinfo) {
 						var msgArr = getMsgArray(msg);
 						test.equal(msgArr[0], expectedVal, "Expected response for '"+command+"' group "+group+" command: msgArr[0]=="+expectedVal);
-						cb1();
-					});}.bind(this),
-				function(cb1){
+						next();
+					});
+				},
+				function(next){
 					var udpCb = function(err,res){
 						if (err) throw err;
 						test.equal(res,3,"Expected UDP response: 3");
-						cb1();
+						next();
 					};
 					if (group != null) milight.WhiteController[command](group,udpCb);
 					else milight.WhiteController[command](null,udpCb);
-				}.bind(this)
+				}
 			],cb);
 		});
 	});
