@@ -59,7 +59,7 @@ class Controller {
 		this._send(group,'on',function(err,res){
 			if (err) throw err;
 			var funcs = [];
-			for (var i = 0; i<9; i++){
+			for (var i = 0; i<10; i++){
 				funcs.push(function(next){
 					self._send(group,'brightnessDown',next);
 				});
