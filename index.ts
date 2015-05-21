@@ -10,7 +10,7 @@ class Controller {
 	socket = dgram.createSocket('udp4');
 	_send = function(group, command, cb){
 		// command can be either a command name string, or an array of numbers  
-		if (!group) group = 0;
+		if (!group && group != null) group = 0;
 		var hex, buffer;
 		if(typeof command == 'string'){
 			hex = this.commands[command];
@@ -40,14 +40,14 @@ class Controller {
 	allOn = function(cb){this.on(0,cb);};
 	allOff = function(cb){this.off(0,cb);};
 	brightnessUp = function(group,cb){
-		if (typeof group == 'undefined') this._send(null,'brightnessUp',cb);
+		if (group == null) this._send(null,'brightnessUp',cb);
 		else this.on(group,function(err,resp){
 			if (err) throw err;
 			this._send(null,'brightnessUp',cb);
 		}.bind(this));
 	};
 	brightnessDown = function(group,cb){
-		if (typeof group == 'undefined') this._send(null,'brightnessDown',cb);
+		if (group == null) this._send(null,'brightnessDown',cb);
 		else this.on(group,function(err,resp){
 			if (err) throw err;
 			this._send(null,'brightnessDown',cb);
