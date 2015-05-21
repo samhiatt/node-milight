@@ -7,6 +7,7 @@ import async = require('async');
 class Controller {
 	host: string = '10.10.10.100';
 	port: number = 8899;
+	delay: number = 50;
 	socket = dgram.createSocket('udp4');
 	_send = function(group, command, cb){ 
 		if (!group && group != null) group = 0;
@@ -57,11 +58,11 @@ class Controller {
 		this._send(group,'on',function(err,res){
 			if (err) throw err;
 			var funcs = [];
-			for (var i = 0; i<9; i++){
+			for (var i = 0; i<10; i++){
 				funcs.push(function(next){
 					setTimeout(function(){
 						self._send(null,'dimmer',next);
-					},10);
+					},self.delay);
 				});
 			}
 			async.series(funcs,cb);
@@ -98,6 +99,7 @@ class Controller {
 	constructor(opts) {
 		if(opts.host) this.host = opts.host;
 		if(opts.port) this.port = opts.port;
+		if(opts.delay) this.delay = opts.delay;
 	}
 }
 
@@ -149,11 +151,11 @@ class WhiteController extends Controller {
 		this.on(group,function(err,res){
 			if (err) throw err;
 			var funcs = [];
-			for (var i = 0; i<9; i++){
+			for (var i = 0; i<10; i++){
 				funcs.push(function(next){
 					setTimeout(function(){
 						self.warmer(null,next);
-					},10);
+					},self.delay);
 				});
 			}
 			async.series(funcs,cb);
@@ -172,11 +174,11 @@ class WhiteController extends Controller {
 		this.on(group,function(err,res){
 			if (err) throw err;
 			var funcs = [];
-			for (var i = 0; i<9; i++){
+			for (var i = 0; i<10; i++){
 				funcs.push(function(next){
 					setTimeout(function(){
 						self.cooler(null,next);
-					},10);
+					},self.delay);
 				});
 			}
 			async.series(funcs,cb);
@@ -192,7 +194,7 @@ class WhiteController extends Controller {
 				funcs.push(function(next){
 					setTimeout(function(){
 						self.warmer(null,next);
-					},10);
+					},self.delay);
 				});
 			}
 			async.series(funcs,cb);
@@ -208,7 +210,7 @@ class WhiteController extends Controller {
 				funcs.push(function(next){
 					setTimeout(function(){
 						self.cooler(null,next);
-					},10);
+					},self.delay);
 				});
 			}
 			async.series(funcs,cb);
