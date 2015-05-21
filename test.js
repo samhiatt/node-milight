@@ -1,4 +1,4 @@
-var milight = require('./')({host:'localhost'});
+var milight = require('./')({host:'localhost',delay:1});
 var udpserver = require('./udpserver');
 var async = require('async');
 
