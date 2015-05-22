@@ -98,6 +98,15 @@ class Controller {
 			}.bind(this),100);
 		}.bind(this));
 	};
+	send(command,group){
+		if (!group) group = 0;
+		return new Promise(function (resolve, reject) {
+			this._send(group,command, function (err, res) {
+				if (err) reject(err);
+				else resolve(res);
+			});
+		}.bind(this));
+	}
 	constructor(opts) {
 		if(opts.host) this.host = opts.host;
 		if(opts.port) this.port = opts.port;
@@ -146,15 +155,6 @@ class RGBWController extends Controller {
 			[[0x4b,0x00,0x55],[0x40,[0x00,0xff],0x55]]
 		]
 	};
-	send(command,group){
-		if (!group) group = 0;
-		return new Promise(function (resolve, reject) {
-			this._send(group,command, function (err, res) {
-				if (err) reject(err);
-				else resolve(res);
-			});
-		}.bind(this));
-	}
 }
 
 class WhiteController extends Controller {

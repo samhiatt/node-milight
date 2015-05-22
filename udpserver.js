@@ -27,9 +27,9 @@ exports.createServer = function(cb){
 				resolve(msgArr);
 			});
 			
-			setTimeout(function () {
-				reject(new Error("Timeout while listening for UDP message."));
-			}, 1000);
+			//setTimeout(function () {
+			//	reject(new Error("Timeout while listening for UDP message."));
+			//}, 1000);
 			
 		});
 	};
