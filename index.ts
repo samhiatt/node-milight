@@ -1,10 +1,10 @@
 /// <reference path="typings/node-0.10.d.ts" />
 /// <reference path="typings/async.d.ts" />
-/// <reference path="typings/es6-promise/es6-promise.d.ts" />
+/// <reference path="typings/bluebird/bluebird.d.ts" />
 
 import dgram = require('dgram');
 import async = require('async');
-import Promise = require('promise');
+import Promise = require('bluebird');
 
 class Controller {
 	host: string = '10.10.10.100';
