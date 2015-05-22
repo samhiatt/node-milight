@@ -1,6 +1,7 @@
 var milight = require('./')({host:'localhost',delay:1});
 var udpserver = require('./udpserver');
 var async = require('async');
+var Promise = require('bluebird');
 
 exports.setUp = function (callback) {
 	udpserver.createServer(function(err,server){
@@ -267,8 +268,88 @@ exports.testWhite = {
 		],function(err,res){
 			if (err) throw err;
 			test.done();
-			// hack to exit tests
-			setTimeout(function(){process.exit(0)},1000);
 		});
 	}
 };
+exports.testRGBW = {
+	testOn: {
+		testOn0: function(test){
+			this.server.listenForMessage().then(function(message){
+				test.equal(message[0],0x42);
+				test.done();
+			});
+			milight.RGBWController.send('on');
+		},
+		testOn1: function(test){
+			this.server.listenForMessage().then(function(message){
+				test.equal(message[0],0x45);
+				test.done();
+			});
+			milight.RGBWController.send('on',1);
+		},
+		testOn2: function(test){
+			this.server.listenForMessage().then(function(message){
+				test.equal(message[0],0x47);
+				test.done();
+			});
+			milight.RGBWController.send('on',2);
+		},
+		testOn3: function(test){
+			this.server.listenForMessage().then(function(message){
+				test.equal(message[0],0x49);
+				test.done();
+			});
+			milight.RGBWController.send('on',3);
+		},
+		testOn4: function(test){
+			this.server.listenForMessage().then(function(message){
+				test.equal(message[0],0x4b);
+				test.done();
+			});
+			milight.RGBWController.send('on',4);
+		}
+	},
+	testOff: {
+		testOff0: function(test){
+			this.server.listenForMessage().then(function(message){
+				test.equal(message[0],0x41);
+				test.done();
+			});
+			milight.RGBWController.send('off');
+		},
+		testOff1: function(test){
+			this.server.listenForMessage().then(function(message){
+				test.equal(message[0],0x46);
+				test.done();
+			});
+			milight.RGBWController.send('off',1);
+		},
+		testOff2: function(test){
+			this.server.listenForMessage().then(function(message){
+				test.equal(message[0],0x48);
+				test.done();
+			});
+			milight.RGBWController.send('off',2);
+		},
+		testOff3: function(test){
+			this.server.listenForMessage().then(function(message){
+				test.equal(message[0],0x4a);
+				test.done();
+			});
+			milight.RGBWController.send('off',3);
+		},
+		testOff4: function(test){
+			this.server.listenForMessage().then(function(message){
+				test.equal(message[0],0x4c);
+				test.done();
+			});
+			milight.RGBWController.send('off',4);
+		}
+	}
+};
+
+// hack to exit tests
+setTimeout(function(){
+	console.log("Tests timed out. Exiting.");
+	process.exit(0)
+},5000);
