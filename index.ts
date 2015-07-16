@@ -98,15 +98,16 @@ class Controller {
 			}.bind(this),100);
 		}.bind(this));
 	};
-	send(command,group){
+	send = function(command,group){
+		var self = this;
 		if (!group) group = 0;
 		return new Promise(function (resolve, reject) {
-			this._send(group,command, function (err, res) {
+			self._send(group,command, function (err, res) {
 				if (err) reject(err);
 				else resolve(res);
 			});
-		}.bind(this));
-	}
+		});
+	};
 	constructor(opts) {
 		if(opts.host) this.host = opts.host;
 		if(opts.port) this.port = opts.port;
