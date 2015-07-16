@@ -28,32 +28,32 @@ class Controller {
 			cb
 		);
 	};
-	on = function(group,cb){this._send(group,'on',cb)};
-	off = function(group,cb){this._send(group,'off',cb)};
-	allOn = function(cb){this.on(0,cb);};
-	allOff = function(cb){this.off(0,cb);};
+	on = function(group,cb){this._send(group,'on',cb)}.bind(this);
+	off = function(group,cb){this._send(group,'off',cb)}.bind(this);
+	allOn = function(cb){this.on(0,cb);}.bind(this);
+	allOff = function(cb){this.off(0,cb);}.bind(this);
 	onFull = function(group,cb){
 		if (!group) group = 0;
 		this._send(group,'on',function(err,res){
 			if (err) throw err;
 			this._send(group,'onFull',cb)
 		}.bind(this));
-	};
-	allOnFull = function(cb){this.onFull(0,cb);};
+	}.bind(this);
+	allOnFull = function(cb){this.onFull(0,cb);}.bind(this);
 	brighter = function(group,cb){
 		if (group == null) this._send(null,'brighter',cb);
 		else this.on(group,function(err,resp){
 			if (err) throw err;
 			this._send(null,'brighter',cb);
 		}.bind(this));
-	};
+	}.bind(this);
 	dimmer = function(group,cb){
 		if (group == null) this._send(null,'dimmer',cb);
 		else this.on(group,function(err,resp){
 			if (err) throw err;
 			this._send(null,'dimmer',cb);
 		}.bind(this));
-	};
+	}.bind(this);
 	darkest = function(group,cb){
 		if (!group) group = 0;
 		var self = this;
@@ -69,7 +69,7 @@ class Controller {
 			}
 			async.series(funcs,cb);
 		});
-	};
+	}.bind(this);
 	setBrightness = function(level,group,cb){
 		if (!group) group = 0;
 		level = Math.floor(level/10);
@@ -89,7 +89,7 @@ class Controller {
 				cb
 			);
 		}.bind(this));
-	};
+	}.bind(this);
 	nightlight = function(group,cb){
 		this.off(group,function(err,resp){
 			if (err) throw err;
@@ -97,7 +97,7 @@ class Controller {
 				this._send(group,'nightlight',cb);
 			}.bind(this),100);
 		}.bind(this));
-	};
+	}.bind(this);
 	send = function(command,group){
 		var self = this;
 		if (!group) group = 0;
