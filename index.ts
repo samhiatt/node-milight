@@ -199,7 +199,7 @@ class WhiteController extends Controller {
 			if (err) throw err;
 			this._send(null,'warmer',cb);
 		}.bind(this));
-	};
+	}.bind(this);
 	warmest = function(group,cb){
 		if (!group) group = 0;
 		var self = this;
@@ -215,14 +215,14 @@ class WhiteController extends Controller {
 			}
 			async.series(funcs,cb);
 		});
-	};
+	}.bind(this);
 	cooler = function(group,cb){
 		if (group == null) this._send(null,'cooler',cb);
 		else this.on(group,function(err,resp){
 			if (err) throw err;
 			this._send(null,'cooler',cb);
 		}.bind(this));
-	};
+	}.bind(this);
 	coolest = function(group,cb){
 		if (!group) group = 0;
 		var self = this;
@@ -238,7 +238,7 @@ class WhiteController extends Controller {
 			}
 			async.series(funcs,cb);
 		});
-	};
+	}.bind(this);
 	setCoolness = function(level,group,cb){
 		if (!group) group = 0;
 		var self = this;
@@ -254,7 +254,7 @@ class WhiteController extends Controller {
 			}
 			async.series(funcs,cb);
 		});
-	};
+	}.bind(this);
 	setWarmness = function(level,group,cb){
 		if (!group) group = 0;
 		var self = this;
@@ -270,7 +270,7 @@ class WhiteController extends Controller {
 			}
 			async.series(funcs,cb);
 		});
-	};
+	}.bind(this);
 }
 
 module.exports = function(opts){
